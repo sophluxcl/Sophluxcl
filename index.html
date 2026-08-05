@@ -1,576 +1,1212 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+>
 
-  <meta name="theme-color" content="#f7f3ec">
+<meta name="theme-color" content="#f7f3ec">
 
-  <title>SOPHLUX · Colección Hogar</title>
+<title>SOPHLUX · Colección Hogar</title>
 
-  <style>
-    :root {
-      --background: #f7f3ec;
-      --background-light: #fcfaf6;
-      --card: rgba(255, 255, 255, 0.76);
+<style>
+  :root {
+    --background: #f6f0e8;
+    --background-light: #fcfaf6;
 
-      --text: #292724;
-      --muted: #777168;
+    --card: #fffdf9;
 
-      --gold: #b68a47;
-      --gold-soft: #d8c29c;
+    --text: #2b2926;
+    --muted: #7c746b;
 
-      --line: rgba(62, 56, 48, 0.12);
+    --gold: #b78a47;
+    --gold-soft: #dcc7a5;
 
-      --shadow:
-        0 18px 50px rgba(70, 60, 47, 0.08);
-    }
+    --line: rgba(70, 61, 51, 0.12);
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    --shadow:
+      0 18px 50px rgba(65, 55, 43, 0.10);
+  }
 
-    html,
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+
+    padding:
+      max(28px, env(safe-area-inset-top))
+      18px
+      max(30px, env(safe-area-inset-bottom));
+
+    color: var(--text);
+
+    font-family:
+      "Helvetica Neue",
+      Arial,
+      sans-serif;
+
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(255,255,255,.98),
+        transparent 38%
+      ),
+      linear-gradient(
+        180deg,
+        #fbf8f3 0%,
+        #f3ece2 100%
+      );
+  }
+
+  .page {
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  /* =====================================
+     LOGO
+     ===================================== */
+
+  .brand {
+    text-align: center;
+    margin: 2px 0 31px;
+  }
+
+  .brand-logo {
+    display: block;
+
+    width: min(100%, 310px);
+    height: auto;
+
+    margin: 0 auto;
+  }
+
+  /* =====================================
+     CABECERA
+     ===================================== */
+
+  .header {
+    margin-bottom: 26px;
+    text-align: center;
+  }
+
+  h1 {
+    max-width: 360px;
+
+    margin: 0 auto;
+
+    font-family:
+      "Times New Roman",
+      Georgia,
+      serif;
+
+    font-size: clamp(29px, 8vw, 38px);
+    font-weight: 400;
+
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  .subtitle {
+    max-width: 340px;
+
+    margin: 13px auto 0;
+
+    color: var(--muted);
+
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* =====================================
+     TARJETAS
+     ===================================== */
+
+  .accounts {
+    display: grid;
+    gap: 22px;
+  }
+
+  .account-card {
+    overflow: hidden;
+
+    border: 1px solid var(--line);
+    border-radius: 22px;
+
+    background: var(--card);
+
+    box-shadow: var(--shadow);
+  }
+
+  /* =====================================
+     CARRUSEL
+     ===================================== */
+
+  .carousel {
+    position: relative;
+
+    width: 100%;
+    height: 290px;
+
+    overflow: hidden;
+
+    background: #ebe4da;
+
+    touch-action: pan-y;
+  }
+
+  .carousel-track {
+    display: flex;
+
+    width: 100%;
+    height: 100%;
+
+    transition:
+      transform 650ms
+      cubic-bezier(.22,.61,.36,1);
+
+    will-change: transform;
+  }
+
+  .carousel-slide {
+    min-width: 100%;
+    height: 100%;
+  }
+
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* suave degradado inferior */
+
+  .carousel::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 50px;
+
+    pointer-events: none;
+
+    background:
+      linear-gradient(
+        to top,
+        rgba(25,20,15,.18),
+        transparent
+      );
+  }
+
+  /* indicadores */
+
+  .carousel-dots {
+    position: absolute;
+
+    left: 50%;
+    bottom: 13px;
+
+    z-index: 5;
+
+    display: flex;
+    gap: 6px;
+
+    transform: translateX(-50%);
+  }
+
+  .carousel-dot {
+    width: 6px;
+    height: 6px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    background: rgba(255,255,255,.62);
+
+    transition:
+      width 250ms ease,
+      background-color 250ms ease;
+  }
+
+  .carousel-dot.active {
+    width: 18px;
+
+    border-radius: 999px;
+
+    background: white;
+  }
+
+  /* =====================================
+     CONTENIDO TARJETA
+     ===================================== */
+
+  .card-content {
+    position: relative;
+
+    padding: 19px 20px 21px;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .card-info {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .account-name {
+    margin: 0 0 5px;
+
+    font-family:
+      "Times New Roman",
+      Georgia,
+      serif;
+
+    font-size: 29px;
+    font-weight: 400;
+
+    line-height: 1;
+  }
+
+  .category {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .account-user {
+    margin: 13px 0 0;
+
+    color: var(--gold);
+
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* =====================================
+     BOTÓN
+     ===================================== */
+
+  .instagram-button {
+    flex: 0 0 auto;
+
+    width: 50px;
+    height: 50px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--gold);
+    text-decoration: none;
+
+    border:
+      1px solid
+      rgba(183,138,71,.28);
+
+    border-radius: 50%;
+
+    background:
+      rgba(183,138,71,.045);
+
+    transition:
+      transform 180ms ease,
+      background 180ms ease;
+  }
+
+  .instagram-button:active {
+    transform: scale(.94);
+
+    background:
+      rgba(183,138,71,.11);
+  }
+
+  .instagram-button svg {
+    width: 21px;
+    height: 21px;
+
+    fill: none;
+    stroke: currentColor;
+
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* toda la información también clickeable */
+
+  .instagram-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* =====================================
+     ORNAMENTO
+     ===================================== */
+
+  .ornament {
+    width: 125px;
+
+    margin: 32px auto 19px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ornament::before,
+  .ornament::after {
+    content: "";
+
+    height: 1px;
+    flex: 1;
+
+    background: var(--gold-soft);
+  }
+
+  .ornament-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--gold);
+  }
+
+  /* =====================================
+     FOOTER
+     ===================================== */
+
+  .footer {
+    padding-bottom: 5px;
+
+    text-align: center;
+
+    color: #968d82;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    letter-spacing: .20em;
+  }
+
+  /* =====================================
+     ESCRITORIO
+     ===================================== */
+
+  @media (min-width: 700px) {
+
     body {
-      min-height: 100%;
-      margin: 0;
-    }
-
-    body {
-      min-height: 100dvh;
-
-      padding:
-        max(28px, env(safe-area-inset-top))
-        22px
-        max(28px, env(safe-area-inset-bottom));
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      color: var(--text);
-
-      font-family:
-        "Helvetica Neue",
-        Arial,
-        sans-serif;
-
-      background:
-        radial-gradient(
-          circle at 50% 0%,
-          rgba(255, 255, 255, 0.95),
-          transparent 46%
-        ),
-        linear-gradient(
-          180deg,
-          #fcfaf6 0%,
-          #f3ede4 100%
-        );
-    }
-
-    .page {
-      width: 100%;
-      max-width: 430px;
-    }
-
-    /* =========================
-       LOGO OFICIAL SOPHLUX
-       ========================= */
-
-    .brand {
-      margin-bottom: 34px;
-      text-align: center;
-    }
-
-    .brand-logo {
-      display: block;
-
-      width: min(100%, 330px);
-      height: auto;
-
-      margin: 0 auto;
-
-      object-fit: contain;
-    }
-
-    /* =========================
-       INTRO
-       ========================= */
-
-    .header {
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    h1 {
-      margin: 0;
-
-      font-family:
-        "Times New Roman",
-        Georgia,
-        serif;
-
-      font-size: 27px;
-      line-height: 1.18;
-
-      font-weight: 400;
-      letter-spacing: -0.02em;
-    }
-
-    .subtitle {
-      max-width: 330px;
-
-      margin: 12px auto 0;
-
-      color: var(--muted);
-
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    /* =========================
-       CUENTAS
-       ========================= */
-
-    .accounts {
-      display: grid;
-      gap: 13px;
+      padding-top: 42px;
+      padding-bottom: 42px;
     }
 
     .account-card {
-      width: 100%;
-
-      min-height: 94px;
-      padding: 15px 16px;
-
-      display: flex;
-      align-items: center;
-      gap: 15px;
-
-      color: inherit;
-      text-decoration: none;
-
-      border: 1px solid var(--line);
-      border-radius: 18px;
-
-      background: var(--card);
-
-      box-shadow: var(--shadow);
-
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-
       transition:
-        transform 180ms ease,
-        border-color 180ms ease,
-        box-shadow 180ms ease,
-        background-color 180ms ease;
+        transform 220ms ease,
+        box-shadow 220ms ease;
     }
 
-    .account-card:active {
-      transform: scale(0.985);
-      background: rgba(255, 255, 255, 0.92);
+    .account-card:hover {
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 24px 65px
+        rgba(65,55,43,.14);
     }
 
-    /* =========================
-       AVATAR
-       ========================= */
-
-    .avatar {
-      flex: 0 0 auto;
-
-      width: 62px;
-      height: 62px;
-
-      display: grid;
-      place-items: center;
-
-      border: 1px solid var(--gold-soft);
-      border-radius: 50%;
+    .instagram-button:hover {
+      transform: translateX(3px);
 
       background:
-        linear-gradient(
-          145deg,
-          #faf7f1,
-          #eee6da
-        );
-
-      color: var(--gold);
-
-      font-family:
-        "Times New Roman",
-        Georgia,
-        serif;
-
-      font-size: 27px;
-      font-weight: 400;
+        rgba(183,138,71,.1);
     }
+  }
 
-    /* =========================
-       INFORMACIÓN CUENTA
-       ========================= */
+  /* =====================================
+     ACCESIBILIDAD
+     ===================================== */
 
-    .account-info {
-      min-width: 0;
-      flex: 1;
+  @media (
+    prefers-reduced-motion: reduce
+  ) {
+
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+
+      transition-duration:
+        .01ms !important;
+
+      animation-duration:
+        .01ms !important;
     }
+  }
 
-    .account-name {
-      margin: 0 0 6px;
-
-      overflow: hidden;
-
-      font-family:
-        "Times New Roman",
-        Georgia,
-        serif;
-
-      font-size: 20px;
-      font-weight: 400;
-
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .account-user {
-      margin: 0;
-
-      overflow: hidden;
-
-      color: var(--muted);
-
-      font-size: 13px;
-      letter-spacing: 0.02em;
-
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    /* =========================
-       FLECHA
-       ========================= */
-
-    .arrow {
-      flex: 0 0 auto;
-
-      width: 38px;
-      height: 38px;
-
-      display: grid;
-      place-items: center;
-
-      border: 1px solid rgba(182, 138, 71, 0.22);
-      border-radius: 50%;
-
-      color: var(--gold);
-
-      background: rgba(182, 138, 71, 0.05);
-    }
-
-    .arrow svg {
-      width: 18px;
-      height: 18px;
-
-      fill: none;
-      stroke: currentColor;
-
-      stroke-width: 1.7;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* =========================
-       ORNAMENTO
-       ========================= */
-
-    .ornament {
-      width: 120px;
-
-      margin: 28px auto 18px;
-
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .ornament::before,
-    .ornament::after {
-      content: "";
-
-      flex: 1;
-      height: 1px;
-
-      background: var(--gold-soft);
-    }
-
-    .ornament-dot {
-      width: 5px;
-      height: 5px;
-
-      border-radius: 50%;
-
-      background: var(--gold);
-    }
-
-    /* =========================
-       FOOTER
-       ========================= */
-
-    .footer {
-      text-align: center;
-
-      color: #999187;
-
-      font-size: 10px;
-      font-weight: 500;
-
-      letter-spacing: 0.18em;
-    }
-
-    /* =========================
-       DESKTOP / HOVER
-       ========================= */
-
-    @media (min-width: 700px) {
-      .account-card:hover {
-        transform: translateY(-3px);
-
-        border-color:
-          rgba(182, 138, 71, 0.32);
-
-        box-shadow:
-          0 22px 60px
-          rgba(70, 60, 47, 0.12);
-
-        background:
-          rgba(255, 255, 255, 0.92);
-      }
-    }
-  </style>
+</style>
 </head>
-
 
 <body>
 
-  <main class="page">
-
-    <!-- =========================
-         LOGO OFICIAL
-         ========================= -->
-
-    <section class="brand">
-
-      <img
-        class="brand-logo"
-        src="sophlux-logo.png"
-        alt="SOPHLUX Colección Hogar"
-      >
-
-    </section>
+<main class="page">
 
 
-    <!-- =========================
-         INTRO
-         ========================= -->
+  <!-- ==================================
+       LOGO SOPHLUX
+       ================================== -->
 
-    <header class="header">
+  <section class="brand">
 
-      <h1>
-        Elige dónde quieres encontrarnos
-      </h1>
-
-      <p class="subtitle">
-        SOPHLUX nace de la unión de dos marcas.
-        Selecciona una para conocer su colección
-        y seguirnos en Instagram.
-      </p>
-
-    </header>
-
-
-    <!-- =========================
-         CUENTAS INSTAGRAM
-         ========================= -->
-
-    <section class="accounts">
-
-
-      <!-- SOPHHAUS -->
-
-      <a
-        class="account-card"
-        href="https://www.instagram.com/sophhaus.cl/"
-        onclick="openInstagram('sophhaus.cl'); return false;"
-        aria-label="Abrir SophHaus en Instagram"
-      >
-
-        <div class="avatar">
-          S
-        </div>
-
-        <div class="account-info">
-
-          <p class="account-name">
-            SophHaus
-          </p>
-
-          <p class="account-user">
-            @sophhaus.cl
-          </p>
-
-        </div>
-
-        <div
-          class="arrow"
-          aria-hidden="true"
-        >
-
-          <svg viewBox="0 0 24 24">
-            <path d="M5 12h14"></path>
-            <path d="m13 6 6 6-6 6"></path>
-          </svg>
-
-        </div>
-
-      </a>
-
-
-      <!-- LUX & FORM -->
-
-      <a
-        class="account-card"
-        href="https://www.instagram.com/luxandform.cl/"
-        onclick="openInstagram('luxandform.cl'); return false;"
-        aria-label="Abrir Lux and Form en Instagram"
-      >
-
-        <div class="avatar">
-          L
-        </div>
-
-        <div class="account-info">
-
-          <p class="account-name">
-            Lux &amp; Form
-          </p>
-
-          <p class="account-user">
-            @luxandform.cl
-          </p>
-
-        </div>
-
-        <div
-          class="arrow"
-          aria-hidden="true"
-        >
-
-          <svg viewBox="0 0 24 24">
-            <path d="M5 12h14"></path>
-            <path d="m13 6 6 6-6 6"></path>
-          </svg>
-
-        </div>
-
-      </a>
-
-    </section>
-
-
-    <!-- =========================
-         DETALLE DORADO
-         ========================= -->
-
-    <div
-      class="ornament"
-      aria-hidden="true"
+    <img
+      class="brand-logo"
+      src="sophlux-logo.png"
+      alt="SOPHLUX Colección Hogar"
     >
-      <span class="ornament-dot"></span>
-    </div>
+
+  </section>
 
 
-    <footer class="footer">
-      SOPHLUX · COLECCIÓN HOGAR
-    </footer>
+  <!-- ==================================
+       INTRODUCCIÓN
+       ================================== -->
 
-  </main>
+  <header class="header">
 
+    <h1>
+      Elige dónde quieres encontrarnos
+    </h1>
 
-  <!-- =========================
-       INSTAGRAM
-       ========================= -->
+    <p class="subtitle">
+      SOPHLUX nace de la unión de dos marcas.
+      Descubre sus productos y selecciona una
+      para seguir explorando en Instagram.
+    </p>
 
-  <script>
-
-    function openInstagram(username) {
-
-      const cleanUsername =
-        username
-          .replace("@", "")
-          .trim();
-
-      const appUrl =
-        "instagram://user?username=" +
-        encodeURIComponent(cleanUsername);
-
-      const webUrl =
-        "https://www.instagram.com/" +
-        encodeURIComponent(cleanUsername) +
-        "/";
-
-      let fallbackTimer;
-
-      /*
-       * Intentamos abrir Instagram.
-       */
-
-      window.location.href = appUrl;
+  </header>
 
 
-      /*
-       * Si la aplicación se abre,
-       * la página pasa a segundo plano.
-       * En ese caso cancelamos el fallback.
-       */
+  <!-- ==================================
+       MARCAS
+       ================================== -->
 
-      const visibilityHandler = () => {
+  <section class="accounts">
 
-        if (document.hidden) {
-          clearTimeout(fallbackTimer);
-        }
 
-      };
+    <!-- =================================
+         SOPHHAUS
+         ================================= -->
 
-      document.addEventListener(
-        "visibilitychange",
-        visibilityHandler,
-        { once: true }
+    <article class="account-card">
+
+
+      <!-- CARRUSEL SOPHHAUS -->
+
+      <div
+        class="carousel"
+        data-carousel
+        data-delay="3500"
+      >
+
+        <div class="carousel-track">
+
+
+          <!-- Mini fogón -->
+
+          <div class="carousel-slide">
+
+            <img
+              src="sophhaus-1.jpg"
+              alt="Mini fogón SophHaus"
+              loading="eager"
+            >
+
+          </div>
+
+
+          <!-- Set casas -->
+
+          <div class="carousel-slide">
+
+            <img
+              src="sophhaus-2.jpg"
+              alt="Set decorativo de casas SophHaus"
+              loading="lazy"
+            >
+
+          </div>
+
+
+          <!-- Bandeja hoja -->
+
+          <div class="carousel-slide">
+
+            <img
+              src="sophhaus-3.jpg"
+              alt="Bandeja hoja SophHaus"
+              loading="lazy"
+            >
+
+          </div>
+
+
+          <!-- Bandeja irregular -->
+
+          <div class="carousel-slide">
+
+            <img
+              src="sophhaus-4.jpg"
+              alt="Bandeja irregular SophHaus"
+              loading="lazy"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="carousel-dots">
+
+          <button
+            class="carousel-dot active"
+            aria-label="Imagen 1 SophHaus"
+          ></button>
+
+          <button
+            class="carousel-dot"
+            aria-label="Imagen 2 SophHaus"
+          ></button>
+
+          <button
+            class="carousel-dot"
+            aria-label="Imagen 3 SophHaus"
+          ></button>
+
+          <button
+            class="carousel-dot"
+            aria-label="Imagen 4 SophHaus"
+          ></button>
+
+        </div>
+
+      </div>
+
+
+      <!-- INFO SOPHHAUS -->
+
+      <div class="card-content">
+
+        <div class="card-top">
+
+          <div class="card-info">
+
+            <a
+              href="https://www.instagram.com/sophhaus.cl/"
+              onclick="openInstagram('sophhaus.cl'); return false;"
+              class="instagram-link"
+            >
+
+              <h2 class="account-name">
+                SophHaus
+              </h2>
+
+              <p class="category">
+                Decoración artesanal para el hogar
+              </p>
+
+              <p class="account-user">
+                @sophhaus.cl
+              </p>
+
+            </a>
+
+          </div>
+
+
+          <a
+            class="instagram-button"
+            href="https://www.instagram.com/sophhaus.cl/"
+            onclick="openInstagram('sophhaus.cl'); return false;"
+            aria-label="Abrir SophHaus en Instagram"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path d="M5 12h14"></path>
+
+              <path
+                d="m13 6 6 6-6 6"
+              ></path>
+
+            </svg>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- =================================
+         LUX & FORM
+         ================================= -->
+
+    <article class="account-card">
+
+
+      <!-- CARRUSEL LUX & FORM -->
+
+      <div
+        class="carousel"
+        data-carousel
+        data-delay="3800"
+      >
+
+        <div class="carousel-track">
+
+
+          <!-- Mini bouquets -->
+
+          <div class="carousel-slide">
+
+            <img
+              src="luxandform-1.jpg"
+              alt="Mini bouquets Lux & Form"
+              loading="eager"
+            >
+
+          </div>
+
+
+          <!-- Velas decorativas -->
+
+          <div class="carousel-slide">
+
+            <img
+              src="luxandform-2.jpg"
+              alt="Velas decorativas Lux & Form"
+              loading="lazy"
+            >
+
+          </div>
+
+
+          <!-- Wax melts corazones -->
+
+          <div class="carousel-slide">
+
+            <img
+              src="luxandform-3.jpg"
+              alt="Wax melts corazones Lux & Form"
+              loading="lazy"
+            >
+
+          </div>
+
+
+          <!-- Wax melts estrellas -->
+
+          <div class="carousel-slide">
+
+            <img
+              src="luxandform-4.jpg"
+              alt="Wax melts estrellas Lux & Form"
+              loading="lazy"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="carousel-dots">
+
+          <button
+            class="carousel-dot active"
+            aria-label="Imagen 1 Lux & Form"
+          ></button>
+
+          <button
+            class="carousel-dot"
+            aria-label="Imagen 2 Lux & Form"
+          ></button>
+
+          <button
+            class="carousel-dot"
+            aria-label="Imagen 3 Lux & Form"
+          ></button>
+
+          <button
+            class="carousel-dot"
+            aria-label="Imagen 4 Lux & Form"
+          ></button>
+
+        </div>
+
+      </div>
+
+
+      <!-- INFO LUX & FORM -->
+
+      <div class="card-content">
+
+        <div class="card-top">
+
+          <div class="card-info">
+
+            <a
+              href="https://www.instagram.com/luxandform.cl/"
+              onclick="openInstagram('luxandform.cl'); return false;"
+              class="instagram-link"
+            >
+
+              <h2 class="account-name">
+                Lux &amp; Form
+              </h2>
+
+              <p class="category">
+                Velas aromáticas y detalles para regalar
+              </p>
+
+              <p class="account-user">
+                @luxandform.cl
+              </p>
+
+            </a>
+
+          </div>
+
+
+          <a
+            class="instagram-button"
+            href="https://www.instagram.com/luxandform.cl/"
+            onclick="openInstagram('luxandform.cl'); return false;"
+            aria-label="Abrir Lux and Form en Instagram"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path d="M5 12h14"></path>
+
+              <path
+                d="m13 6 6 6-6 6"
+              ></path>
+
+            </svg>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+
+  <!-- ==================================
+       ORNAMENTO
+       ================================== -->
+
+  <div
+    class="ornament"
+    aria-hidden="true"
+  >
+
+    <span class="ornament-dot"></span>
+
+  </div>
+
+
+
+  <footer class="footer">
+
+    SOPHLUX · COLECCIÓN HOGAR
+
+  </footer>
+
+
+</main>
+
+
+<script>
+
+  /* ====================================
+     CARRUSELES
+     ==================================== */
+
+  document
+    .querySelectorAll("[data-carousel]")
+    .forEach(initCarousel);
+
+
+  function initCarousel(carousel) {
+
+    const track =
+      carousel.querySelector(
+        ".carousel-track"
       );
 
+    const slides =
+      carousel.querySelectorAll(
+        ".carousel-slide"
+      );
 
-      /*
-       * Si Instagram no se abrió,
-       * después de 1.3 segundos
-       * enviamos al usuario a Instagram Web.
-       */
+    const dots =
+      carousel.querySelectorAll(
+        ".carousel-dot"
+      );
 
-      fallbackTimer =
-        setTimeout(() => {
+    const delay =
+      Number(
+        carousel.dataset.delay
+      ) || 3500;
 
-          if (!document.hidden) {
-            window.location.href = webUrl;
-          }
 
-        }, 1300);
+    let index = 0;
+
+    let timer = null;
+
+    let touchStartX = 0;
+
+    let touchEndX = 0;
+
+
+
+    /* ---------------------------
+       MOSTRAR IMAGEN
+       --------------------------- */
+
+    function showSlide(newIndex) {
+
+      index =
+        (
+          newIndex +
+          slides.length
+        )
+        %
+        slides.length;
+
+
+      track.style.transform =
+        `translateX(-${index * 100}%)`;
+
+
+      dots.forEach(
+        (dot, dotIndex) => {
+
+          dot.classList.toggle(
+            "active",
+            dotIndex === index
+          );
+
+        }
+      );
 
     }
 
-  </script>
+
+
+    /* ---------------------------
+       SIGUIENTE
+       --------------------------- */
+
+    function nextSlide() {
+
+      showSlide(index + 1);
+
+    }
+
+
+
+    /* ---------------------------
+       AUTOMÁTICO
+       --------------------------- */
+
+    function startAutoPlay() {
+
+      stopAutoPlay();
+
+      timer =
+        setInterval(
+          nextSlide,
+          delay
+        );
+
+    }
+
+
+    function stopAutoPlay() {
+
+      if (timer) {
+
+        clearInterval(timer);
+
+        timer = null;
+
+      }
+
+    }
+
+
+
+    /* ---------------------------
+       INDICADORES
+       --------------------------- */
+
+    dots.forEach(
+      (dot, dotIndex) => {
+
+        dot.addEventListener(
+          "click",
+          () => {
+
+            showSlide(dotIndex);
+
+            startAutoPlay();
+
+          }
+        );
+
+      }
+    );
+
+
+
+    /* ---------------------------
+       SWIPE MÓVIL
+       --------------------------- */
+
+    carousel.addEventListener(
+      "touchstart",
+      event => {
+
+        touchStartX =
+          event
+            .changedTouches[0]
+            .screenX;
+
+        stopAutoPlay();
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    carousel.addEventListener(
+      "touchend",
+      event => {
+
+        touchEndX =
+          event
+            .changedTouches[0]
+            .screenX;
+
+
+        const distance =
+          touchStartX -
+          touchEndX;
+
+
+        /*
+         * Swipe mínimo:
+         * 40 píxeles
+         */
+
+        if (
+          Math.abs(distance)
+          >
+          40
+        ) {
+
+          if (distance > 0) {
+
+            showSlide(
+              index + 1
+            );
+
+          } else {
+
+            showSlide(
+              index - 1
+            );
+
+          }
+
+        }
+
+
+        startAutoPlay();
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+
+    /* ---------------------------
+       PAUSAR SI EL USUARIO
+       SALE DE LA PESTAÑA
+       --------------------------- */
+
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+
+        if (document.hidden) {
+
+          stopAutoPlay();
+
+        } else {
+
+          startAutoPlay();
+
+        }
+
+      }
+    );
+
+
+    showSlide(0);
+
+    startAutoPlay();
+
+  }
+
+
+
+  /* ====================================
+     INSTAGRAM
+     ==================================== */
+
+  function openInstagram(username) {
+
+    const cleanUsername =
+      username
+        .replace("@", "")
+        .trim();
+
+
+    const appUrl =
+      "instagram://user?username=" +
+      encodeURIComponent(
+        cleanUsername
+      );
+
+
+    const webUrl =
+      "https://www.instagram.com/" +
+      encodeURIComponent(
+        cleanUsername
+      )
+      +
+      "/";
+
+
+    let fallbackTimer;
+
+
+    /*
+     * Intentamos abrir
+     * la aplicación.
+     */
+
+    window.location.href =
+      appUrl;
+
+
+
+    /*
+     * Si Instagram se abre,
+     * el navegador queda oculto.
+     */
+
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+
+        if (document.hidden) {
+
+          clearTimeout(
+            fallbackTimer
+          );
+
+        }
+
+      },
+      {
+        once: true
+      }
+    );
+
+
+
+    /*
+     * Si la app no está disponible,
+     * abrimos Instagram web.
+     */
+
+    fallbackTimer =
+      setTimeout(
+        () => {
+
+          if (!document.hidden) {
+
+            window.location.href =
+              webUrl;
+
+          }
+
+        },
+        1300
+      );
+
+  }
+
+</script>
 
 </body>
 </html>
